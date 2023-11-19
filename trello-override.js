@@ -1,8 +1,10 @@
 function checkOnBoard() {
   if (window.location.href.includes('trello.com/b/')) {
-    return true
+    return 'b'
+  } if (window.location.href.includes('trello.com/c/')) {
+    return 'c'
   } else {
-    return false
+    return ''
   }
 }
 
@@ -10,7 +12,9 @@ var lastCardCount = 0;
 
 function calculateCardCount() {
 
-  if (checkOnBoard()) {
+  const status = checkOnBoard()
+
+  if (status === 'b') {
 
     // 傳統模式
     if (document.querySelectorAll('.list-card').length > 0) {
@@ -46,6 +50,22 @@ function calculateCardCount() {
         link.insertAdjacentHTML('afterbegin', '<span class="card-short-id">#' + link.href.split('/').pop().split('-').shift() + '</span>');
       }
     }
+  }
+
+  else if (status === 'c') {
+
+    var cardDetailId = document.querySelectorAll('.card-detail-window  .card-short-id');
+
+    if (cardDetailId.length > 0)
+      return;
+
+    //var cardDetaiTitle = document.querySelectorAll('.mod-card-back-title');
+    var cardDetailInlineContent = document.querySelectorAll('.window-header-inline-content .u-inline-block');
+    var cardId = window.location.href.split('/').pop().split('-').shift();
+
+    cardDetailInlineContent.item(0).insertAdjacentHTML(
+      'afterbegin',
+      '<span class="card-short-id">#' + cardId + '</span>');
   }
 }
 
